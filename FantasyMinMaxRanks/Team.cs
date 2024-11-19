@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace FantasyMinMaxRanks
 {
-    internal class Team
+    public class Team
     {
+        public string Name { get; set; }
+        public int Wins { get; set; }
+        public int Losses { get; set; }
+        public int TotalScore { get; set; }
     }
+
 }

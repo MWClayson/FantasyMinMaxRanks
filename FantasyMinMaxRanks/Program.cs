@@ -1,33 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Net.WebSockets;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace FantasyMinMaxRanks
 {
     internal class Program
     {
-        public class Team
-        {
-            public string Name { get; set; }
-            public int Wins { get; set; }
-            public int Losses { get; set; }
-            public int TotalScore { get; set; }
-        }
-
-        public struct Matchup
-        {
-            public string TeamA { get; set; }
-            public string TeamB { get; set; }
-        }
-
-        public class RankingData
-        {
-            // Store min and max rank for each team
-            public int MinRank { get; set; } = int.MaxValue;
-            public int MaxRank { get; set; } = -1;
-        }
-
-
-        static List<Team> teams = new List<Team>
+       public  List<Team> teamsStatic = new List<Team>
     {
         new Team { Name = "Olavers Team", Wins = 9, Losses = 2, TotalScore = 1164 },
         new Team { Name = "Hurts to be winning", Wins = 9, Losses = 2, TotalScore = 1090 },
@@ -44,7 +24,7 @@ namespace FantasyMinMaxRanks
     };
 
         // List of matchups for the remaining weeks
-        static List<List<Matchup>> matchups = new List<List<Matchup>>
+        public  List<List<Matchup>> matchupsStatic = new List<List<Matchup>>
     {
         new List<Matchup> // Week 12
         {
@@ -76,7 +56,12 @@ namespace FantasyMinMaxRanks
         };
         static void Main(string[] args)
         {
+            getRankingData(teamsStatic, matchupsStatic).RunSynchronously(); ;
 
+        }
+
+        public async Task<Dictionary<string,RankingData>> getRankingData(List<Team> teams, List<List<Matchup>> matchups)
+        {
             Stopwatch sw = Stopwatch.StartNew();
             // Initial rankings (min/max for each team)
             var rankings = teams.ToDictionary(t => t.Name, t => new RankingData());
@@ -84,6 +69,7 @@ namespace FantasyMinMaxRanks
 
             // Get all possible outcomes
             var possibleOutcomes = GeneratePossibleOutcomes();
+            var possibleOutcomesLength = possibleOutcomes.Count();
             Console.WriteLine($"{possibleOutcomes.Count} diffrent simulations");
 
             // Run the simulations in parallel
@@ -98,12 +84,32 @@ namespace FantasyMinMaxRanks
                 }).ToList();
 
                 // Calculate rankings after simulation
-                SimulateMatchups(simulatedTeams,outcome);
+                SimulateMatchups(simulatedTeams, outcome);
                 var DenseRankedTeams = CalculateRanks(simulatedTeams);
-                foreach(var t in DenseRankedTeams)
+                foreach (var t in DenseRankedTeams)
                 {
-                    rankingsUsingDenseRank[t.name].MinRank = Math.Min(rankingsUsingDenseRank[t.name].MinRank, t.MinRank+1);
-                    rankingsUsingDenseRank[t.name].MaxRank = Math.Max(rankingsUsingDenseRank[t.name].MaxRank, t.MaxRank+1);
+                    if (rankingsUsingDenseRank[t.name].MinRank > t.MinRank + 1)
+                    {
+                        rankingsUsingDenseRank[t.name].MinRank = t.MinRank + 1;
+                    }
+                    if (rankingsUsingDenseRank[t.name].MaxRank < t.MaxRank + 1)
+                    {
+                        rankingsUsingDenseRank[t.name].MaxRank = t.MaxRank + 1;
+                    }
+
+                    if (t.MinRank == t.MaxRank)
+                    {
+                        rankingsUsingDenseRank[t.name].distrubution[t.MinRank] += 1.00d;
+                    }
+                    else
+                    {
+                        var distributaedrank = 1.00d / (t.MaxRank - t.MinRank);
+
+                        for (int i = t.MinRank; i <= t.MaxRank; i++)
+                        {
+                            rankingsUsingDenseRank[t.name].distrubution[i] += distributaedrank;
+                        }
+                    }
                 }
 
             })).ToList();
@@ -117,8 +123,15 @@ namespace FantasyMinMaxRanks
             Console.WriteLine("Team Dense Rankings (Min and Max positions):");
             foreach (var team in rankingsUsingDenseRank)
             {
+                for (int i = 0; i < team.Value.distrubution.Length; i++)
+                {
+                    rankingsUsingDenseRank[team.Key].distrubution[i] = rankingsUsingDenseRank[team.Key].distrubution[i] / possibleOutcomesLength;
+                }
                 Console.WriteLine($"{team.Key}: Min Rank = {team.Value.MinRank}, Max Rank = {team.Value.MaxRank}");
             }
+
+            Console.WriteLine(JsonSerializer.Serialize(rankingsUsingDenseRank));
+            return rankingsUsingDenseRank;
         }
 
         static List<List<string>> GeneratePossibleOutcomes()
@@ -181,15 +194,17 @@ namespace FantasyMinMaxRanks
                 var wins = s.First(t => t.Name == team.Name).Wins;
                 var max = s.Where(w => w.Wins == wins).Max(x => x.rank);
                 var min = s.Where(w => w.Wins == wins).Min(x => x.rank);
-                trs.Add(new TeamRank { name = team.Name, MaxRank = max, MinRank = min });
+                trs.Add(new TeamRank { name = team.Name, MaxRank = max, MinRank = min, scores = simulatedTeams });
             }
             return trs;
         }
-        public struct TeamRank
+        public class TeamRank
         {
             public string name;
             public int MaxRank;
             public int MinRank;
+            public Dictionary<int, float> rankStats;
+            public List<Team> scores;
         }
 
         
