@@ -21,13 +21,8 @@ jobs:
 
     steps:
     
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🎉 The job was automatically triggered by a ${{ secrets.GITHUB_TOKEN }} event."
-  
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v4
-        with: 
-            token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
         uses: actions/setup-dotnet@v1
