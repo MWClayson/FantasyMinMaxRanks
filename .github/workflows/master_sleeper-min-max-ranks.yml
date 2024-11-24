@@ -20,13 +20,15 @@ jobs:
       id-token: write #This is required for requesting the JWT
 
     steps:
+    
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🎉 The job was automatically triggered by a ${{ secrets.GITHUB_TOKEN }} event."
+  
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v4
         with: 
             token: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🎉 The job was automatically triggered by a ${{ secrets.GITHUB_TOKEN }} event."
       - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
         uses: actions/setup-dotnet@v1
         with:
