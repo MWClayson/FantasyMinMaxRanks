@@ -15,6 +15,7 @@ using FantasyMinMaxRanks.api.User;
 using FantasyMinMaxRanks;
 using System.Linq;
 using FantasyMinMaxRanks.api.MatchUp;
+using System.Xml.Linq;
 
 namespace FantassyMinMaxRanks.api
 {
@@ -75,8 +76,10 @@ namespace FantassyMinMaxRanks.api
                 RankCaclulator rc = new RankCaclulator(teams, Matchups);
 
                 var result = await rc.CalculateRanks();
+                var RankingDataResult = result.OrderByDescending(x => x.Value.MinRank).ThenByDescending(x => x.Value.MaxRank).Select(x => new RData{ TeamName = x.Key, MaxPos = x.Value.MaxRank, MinPos = x.Value.MinRank  }).ToList();
+                var respone  = new MinMaxResponse { RankingData = RankingDataResult, teamCount = teams.Count, teamNames = teams.Select(x => x.Name).ToList() };
 
-                return new OkObjectResult(result);
+                return new OkObjectResult(respone);
             }
             catch (Exception ex) 
             {
