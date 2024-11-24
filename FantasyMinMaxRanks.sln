@@ -5,7 +5,7 @@ VisualStudioVersion = 17.10.35004.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FantasyMinMaxRanks", "FantasyMinMaxRanks\FantasyMinMaxRanks.csproj", "{6999640B-E993-4CB5-9081-00CC217F7D9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetFantasyMinMaxRanks", "GetFantasyMinMaxRanks\GetFantasyMinMaxRanks.csproj", "{D26EBACD-1EC3-4E1C-9F96-341358C44FFD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasyMinMaxRanks.api", "FantassyMinMaxRanks.api\FantasyMinMaxRanks.api.csproj", "{D2CF666C-65DE-4E2D-8F01-4F190F91CE83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{6999640B-E993-4CB5-9081-00CC217F7D9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6999640B-E993-4CB5-9081-00CC217F7D9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6999640B-E993-4CB5-9081-00CC217F7D9B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D26EBACD-1EC3-4E1C-9F96-341358C44FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D26EBACD-1EC3-4E1C-9F96-341358C44FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D26EBACD-1EC3-4E1C-9F96-341358C44FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D26EBACD-1EC3-4E1C-9F96-341358C44FFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2CF666C-65DE-4E2D-8F01-4F190F91CE83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2CF666C-65DE-4E2D-8F01-4F190F91CE83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2CF666C-65DE-4E2D-8F01-4F190F91CE83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2CF666C-65DE-4E2D-8F01-4F190F91CE83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

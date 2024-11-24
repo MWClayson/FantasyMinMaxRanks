@@ -12,7 +12,5 @@ namespace FantasyMinMaxRanks
         public int MinRank { get; set; } = int.MaxValue;
         public int MaxRank { get; set; } = -1;
         public double[] distrubution { get; set; } = new double[12] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        //public List<Team> MinTeamRanking { get; set; }
-        //public List<Team> MaxTeamRanking { get; set; }
     }
 }
