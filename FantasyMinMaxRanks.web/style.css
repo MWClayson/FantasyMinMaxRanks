@@ -13,6 +13,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+text{
+  font: Helvetica;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -61,6 +67,13 @@ h1 {
 
 .read-the-docs {
   color: #888;
+}
+
+
+
+.grid-lines line {
+  stroke: gray;
+  stroke-opacity: 0.2;
 }
 
 button {

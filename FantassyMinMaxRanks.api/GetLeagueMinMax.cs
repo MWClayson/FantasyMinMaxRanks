@@ -40,6 +40,11 @@ namespace FantassyMinMaxRanks.api
 
                 var league = await client.GetAsync<League>(new RestRequest("/league/" + name));
 
+                if(league == null)
+                {
+                    return new BadRequestObjectResult("Invalid LeagueId");
+                }
+
                 if (league.status != "in_season")
                 {
                     return new BadRequestObjectResult("League is not in season");
