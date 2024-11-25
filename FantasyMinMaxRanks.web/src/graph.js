@@ -1,8 +1,5 @@
-    
-    // $.get("http://localhost:7155/api/GetLeagueRankStats?LeagueId=1052318984504311808",function(data,status){
-    //     console.log(data);
-    // })
-    
+
+
 const url = "http://localhost:7155/api/GetLeagueRankStats?LeagueId=1052318984504311808"
 
 $.ajax({
@@ -22,8 +19,8 @@ $.ajax({
 function drawGraph(data){
 
     // Declare the chart dimensions and margins.
-    const width = 640;
-    const height = 400;
+    const width = 1000;
+    const height = 1000;
     const marginTop = 20;
     const marginRight = 20;
     const marginBottom = 30;
